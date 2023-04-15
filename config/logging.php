@@ -4,6 +4,12 @@ use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
 
+$mongoHost = env('MONGODB_HOST', '127.0.0.1');
+$mongoPort = env('MONGODB_PORT', 27017);
+$mongoUsername = env('MONGODB_USERNAME', 'homestead');
+$mongoPassword = env('MONGODB_PASSWORD', 'secret');
+$mongoDatabase = env('MONGODB_AUTH_DATABASE', 'admin');
+
 return [
 
     /*
@@ -50,23 +56,40 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily'],
+            'channels' => ['daily', 'mongo'],
             'ignore_exceptions' => false,
         ],
 
         'single' => [
             'driver' => 'single',
-            'tap' => [\App\Foundation\Logger\FormatHandler::class],
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'tap' => [\App\Foundation\Logger\FormatHandler::class],
             'path' => storage_path('logs/laravel.log'),
-            'level' => env('LOG_LEVEL', 'debug'),
-            'days' => 600,
+            'level' => env('DAILY_LOG_LEVEL', 'debug'),
+            'days' => env('DAILY_LOG_DAYS', 60),
+
+            'tap' => [App\Foundation\Logger\Tap\ChannelDaily::class],
+        ],
+
+        'mongo' => [
+            'driver' => 'monolog',
+            'level' => env('MONGODB_LOG_LEVEL', 'debug'),
+            'handler' => Monolog\Handler\MongoDBHandler::class,
+            'handler_with' => [
+                'mongodb' => new MongoDB\Client("mongodb://$mongoUsername:$mongoPassword@$mongoHost:$mongoPort/$mongoDatabase"),
+                'database' => env('MONGODB_DATABASE', 'homestead'),
+                'collection' => env('MONGODB_LOG_COLLECTION', 'logs'),
+            ],
+            'formatter_with' => [
+                'max_nesting_level' => env('MONGODB_LOG_MAX_NESTING_LEVEL', 6),
+                'exception_trace_as_string' => env('MONGODB_LOG_EXCEPTION_TRACE_AS_STRING', true),
+            ],
+
+            'tap' => [App\Foundation\Logger\Tap\ChannelMongo::class],
         ],
 
         'slack' => [

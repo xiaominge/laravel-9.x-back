@@ -31,7 +31,9 @@ class AdminPermissionVerify
         } else {
             logger_handler()
                 ->setLogType('admin-permission-verify')
-                ->info('NO-AUTH: ' . $routeName);
+                ->info('NO-AUTH: ' . $routeName, [
+                    'user-permissions' => $userPermissions,
+                ]);
             return $this->returnErrorMsg('您没有相关权限执行该操作');
         }
     }

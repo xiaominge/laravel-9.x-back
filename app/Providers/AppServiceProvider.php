@@ -8,6 +8,7 @@ use App\Foundation\Response\BusinessHandlerUser;
 use App\Foundation\ResultReturn\ResultReturn;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -39,6 +40,8 @@ class AppServiceProvider extends ServiceProvider
     {
         // 设置请求开始时间
         context()->request_start_time = get_millisecond();
+        // 设置请求 ID
+        context()->request_id = (string)Str::uuid();
         // 设置默认分页视图
         Paginator::defaultView('admin.common.page');
         // 监听数据库操作记录

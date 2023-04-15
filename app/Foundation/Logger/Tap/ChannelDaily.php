@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Foundation\Logger;
+namespace App\Foundation\Logger\Tap;
 
+use App\Constant\DateFormat;
 use Monolog\Formatter\LogstashFormatter;
 
 /**
- * Class FormatHandler
- * @package App\Foundation\Logger
+ * Class ChannelDaily
+ * @package App\Foundation\Logger\Tap
  */
-class FormatHandler
+class ChannelDaily
 {
     /**
-     * Set the custom logger format instance.
-     * @param $logger
+     * 自定义给定的日志实例
+     * @param \Illuminate\Log\Logger $logger
      * @return void
      */
     public function __invoke($logger)
     {
         $formatter = new LogstashFormatter(config('app.name'));
+        $formatter->setDateFormat(DateFormat::FULL_FRIENDLY);
+
         foreach ($logger->getHandlers() as $handler) {
             $handler->setFormatter($formatter);
         }

@@ -6,7 +6,7 @@ use App\Exceptions\BusinessException;
 use Illuminate\Support\Facades\Log;
 
 /**
- * Class LoggerHandler
+ * Class Handler
  * @package App\Foundation\Logger
  *
  * @method void emergency(string $message, array $context = [])
@@ -20,25 +20,44 @@ use Illuminate\Support\Facades\Log;
  */
 class Handler
 {
+    /**
+     * 日志类型
+     * @var string
+     */
     protected string $logType = 'general';
-    protected array $methods = ['notice', 'emergency', 'alert', 'critical', 'error', 'warning', 'info', 'debug'];
-
-    const LOG_TYPE = 'log_type';
 
     /**
-     * Set current logger object custom type
+     * 支持的方法
+     * @var array|string[]
+     */
+    protected array $methods = [
+        'notice', 'emergency', 'alert', 'critical',
+        'error', 'warning', 'info', 'debug',
+    ];
+
+    /**
+     * 日志类型字段键值
+     */
+    const LOG_TYPE_KEY = 'log-type';
+
+    /**
+     * 日志请求 ID 字段键值
+     */
+    const LOG_REQUEST_ID_KEY = 'request-id';
+
+    /**
+     * 设置日志类型
      * @param $name
      * @return $this
      */
     public function setLogType($name)
     {
         $this->logType = $name;
-
         return $this;
     }
 
     /**
-     * Get custom logger type
+     * 获取日志类型
      * @return string
      */
     public function getLogType()
@@ -47,18 +66,22 @@ class Handler
     }
 
     /**
-     * Keep different levels of logs for different rooms
+     * 调用不同的方法写入日志
      * @param $method
      * @param $args
      * @return void
+     * @throws BusinessException
      */
     public function __call($method, $args)
     {
         if (!in_array($method, $this->methods)) {
-            throw new BusinessException(sprintf("Method %s not exists", $method));
+            throw new BusinessException(sprintf("Method %s not exists!", $method));
         }
-        $context = [self::LOG_TYPE => $this->getLogType()];
-        $callArgs = isset($args[1]) ? array_merge($context, $args[1]) : $context;
-        Log::channel('stack')->$method($args[0], $callArgs);
+
+        Log::withContext([
+            self::LOG_TYPE_KEY => $this->getLogType(),
+            self::LOG_REQUEST_ID_KEY => context()->get('request_id'),
+        ]);
+        Log::channel('stack')->$method(...$args);
     }
 }

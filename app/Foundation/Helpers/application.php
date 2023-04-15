@@ -336,13 +336,15 @@ if (!function_exists('db_listen')) {
     function db_listen()
     {
         $callBack = function ($query) {
+            $sql = $query->sql;
+            if (!empty($query->bindings)) {
+                foreach ($query->bindings as $val) {
+                    $sql = preg_replace('|\?|', "'" . $val . "'", $sql, 1);
+                }
+            }
             logger_handler()
                 ->setLogType('db_listen')
-                ->info('', [
-                    'sql' => $query->sql,
-                    'bindings' => $query->bindings,
-                    'time' => $query->time,
-                ]);
+                ->info('Exec time : ' . $query->time . " ; SQL : " . $sql);
         };
         DB::listen($callBack);
     }
