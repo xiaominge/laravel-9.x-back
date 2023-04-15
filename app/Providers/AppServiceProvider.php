@@ -27,7 +27,6 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('context', function () {
             return ContextHandler::getInstance();
         });
-        //
     }
 
     /**

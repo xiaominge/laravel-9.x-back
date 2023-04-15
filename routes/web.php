@@ -70,11 +70,10 @@ Route::middleware(['auth.admin'])
             });
 
         // 错误页面
-        Route::get('admin/error', 'ErrorController@index')->name('error');
+        Route::get('admin/error', ['ErrorController', 'index'])->name('error');
 
         // 用户角色
         Route::controller('RoleController')
-            ->middleware(['admin.permission.verify'])
             ->name('roles.')
             ->group(function () {
                 Route::get('admin/roles', 'index')->name('index');
