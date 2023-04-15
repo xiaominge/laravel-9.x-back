@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Jobs\RoleStore;
 
 class RoleController extends Controller
 {
@@ -15,7 +16,8 @@ class RoleController extends Controller
     {
         $requestJson = request_json_payload();
 
-        logger_handler()->setLogType('role_store')->info($requestJson);
+        // 派发任务到队列
+        RoleStore::dispatch($requestJson)->onQueue('role_store');
 
         return business_handler()->ok($requestJson);
     }
