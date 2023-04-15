@@ -22,7 +22,7 @@
         <div class="message">{{ config('app.name') . " - 管理平台登录" }}</div>
         <div id="darkbannerwrap"></div>
 
-        <form method="post" action="{{ route('admin.login') }}" class="layui-form">
+        <form method="post" action="{{ route('admin.login.login') }}" class="layui-form">
             @csrf
             <input name="name" value="{{ old('name') }}" placeholder="用户名" type="text" lay-verType="tips"
                    lay-verify="required|name"
@@ -53,12 +53,12 @@
 
             form.on('submit(login)', function (formData) {
                 sendAjax({
-                    'url': "{{ route('admin.login') }}",
+                    'url': "{{ route('admin.login.login') }}",
                     'data': formData.field,
                     'successCallBack': function (data) {
                         if (data.code == 2000000) {
                             layer.msg(data.message, {icon: 6, time: 1000}, function () {
-                                location.href = "{{ route('admin.home') }}";
+                                location.href = "{{ route('admin.home.index') }}";
                             });
                         } else {
                             layer.msg(data.message, {icon: 5, time: 3000});

@@ -17,13 +17,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/**
+ * 测试路由
+ */
+Route::get('/test', function () {
+
+    $userId = 31;
+    $targetId = 21;
+
+    $insertRet = service()->user->userSeenSaveToMongodb($userId, $targetId);
+    print_r($insertRet);
+
+    $latestInfo = mongodb('user_seen')
+        ->where('target_id', $targetId)
+        ->orderBy('created_at', 'desc')
+        ->first();
+
+    return $latestInfo;
+});
+
 // 后台登录
 Route::namespace('App\Http\Controllers\Admin')
     ->controller('LoginController')
-    ->name('admin.login')
+    ->name('admin.login.')
     ->group(function () {
-        Route::get('admin/login', 'showLoginForm');
-        Route::post('admin/login', 'login');
+        Route::get('admin/login', 'showLoginForm')->name('form');
+        Route::post('admin/login', 'login')->name('login');
     });
 
 // 后台系统
@@ -34,16 +53,17 @@ Route::middleware('auth.admin')
         // 登出
         Route::get('admin/logout', 'LoginController@logout')->name('logout');
 
+        // 后台主页面
         Route::controller('HomeController')
-            ->name('home')
+            ->name('home.')
             ->group(function () {
-                // 后台主页面
-                Route::get('admin', 'index');
+                // 后台框架页
+                Route::get('admin', 'index')->name('index');
                 // 后台欢迎页
-                Route::get('admin/welcome', 'welcome')->name('.welcome');
+                Route::get('admin/welcome', 'welcome')->name('welcome');
                 // 修改账号密码
-                Route::get('admin/password', 'changePassword')->name('.password.change');
-                Route::put('admin/password', 'doChangePassword')->name('.password.do-change');
+                Route::get('admin/password', 'changePassword')->name('password.change');
+                Route::put('admin/password', 'doChangePassword')->name('password.do-change');
             });
 
         // 错误页面

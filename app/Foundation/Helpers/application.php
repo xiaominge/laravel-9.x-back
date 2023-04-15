@@ -43,6 +43,17 @@ if (!function_exists('business_handler_user')) {
     }
 }
 
+if (!function_exists('result_return')) {
+    /**
+     *
+     * @return App\Foundation\ResultReturn\ResultReturn
+     */
+    function result_return()
+    {
+        return app('resultReturn');
+    }
+}
+
 if (!function_exists('context')) {
     /**
      * Gets data that is saved only once in the life cycle
@@ -68,8 +79,7 @@ if (!function_exists('context')) {
 }
 if (!function_exists('auth_admin')) {
     /**
-     * 判断后台用户是否登录
-     *
+     * 获取后台登录用户
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     function auth_admin()
@@ -80,7 +90,7 @@ if (!function_exists('auth_admin')) {
 
 if (!function_exists('auth_admin_id')) {
     /**
-     * 判断后台用户是否登录
+     * 获取后台登录用户 ID
      *
      * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
@@ -100,6 +110,18 @@ if (!function_exists('redis')) {
     function redis($connection = 'default')
     {
         return Redis::connection($connection);
+    }
+}
+
+if (!function_exists('mongodb')) {
+    /**
+     * @param $table
+     * @return  \Jenssegers\Mongodb\Eloquent\Builder
+     */
+    function mongodb($table)
+    {
+        return \Illuminate\Support\Facades\DB::connection('mongodb')
+            ->collection($table);
     }
 }
 

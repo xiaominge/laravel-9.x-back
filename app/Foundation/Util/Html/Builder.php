@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Foundation;
+namespace App\Foundation\Util\Html;
 
-class HtmlBuilder
+class Builder
 {
     /**
      * Convert an HTML string to entities.

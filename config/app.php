@@ -41,7 +41,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool)env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Shanghai',
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +168,8 @@ return [
          * Package Service Providers...
          */
 
+        Jenssegers\Mongodb\MongodbServiceProvider::class,
+
         /*
          * Application Service Providers...
          */
@@ -192,6 +194,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...
+        'Mongo' => Jenssegers\Mongodb\MongodbServiceProvider::class,
     ])->toArray(),
 
 ];

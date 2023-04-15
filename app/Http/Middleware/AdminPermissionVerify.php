@@ -34,15 +34,24 @@ class AdminPermissionVerify
         }
     }
 
+    /**
+     * 返回带有错误信息的响应
+     * @param $message
+     * @return \Illuminate\Http\RedirectResponse|mixed
+     */
     private function returnErrorMsg($message)
     {
         if (request()->ajax() || request()->wantsJson()) {
-            return business_handler_user()->fail($message);
+            return user_business_handler()->fail($message);
         } else {
             return back()->withErrors($message);
         }
     }
 
+    /**
+     * 公开路由
+     * @return array
+     */
     private function publicRoutes()
     {
         return [];

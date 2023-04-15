@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Foundation\Context\ContextHandler;
 use App\Foundation\Response\BusinessHandler;
 use App\Foundation\Response\BusinessHandlerUser;
+use App\Foundation\ResultReturn\ResultReturn;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -13,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public $singletons = [
         'businessHandler' => BusinessHandler::class,
         'businessHandlerUser' => BusinessHandlerUser::class,
+        'resultReturn' => ResultReturn::class,
     ];
 
     /**

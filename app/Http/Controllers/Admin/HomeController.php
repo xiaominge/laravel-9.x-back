@@ -25,14 +25,23 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $permissions = service()->permission->getLoginAdminPermission()
-            ->sortByDesc('sort')->values();
+        $permissions = service()
+            ->permission
+            ->getLoginAdminPermission()
+            ->sortByDesc('sort')
+            ->values();
         $topMenus = $permissions->where('pid', 0)->toArray();
         $permissionsGroupByPid = $permissions->groupBy('pid')->toArray();
 //        dd($topMenus, $permissionsGroupByPid, $permissions->toArray());
-        return view('admin.home.home', compact('topMenus', 'permissionsGroupByPid'));
+        return view('admin.home.home', compact(
+            'topMenus', 'permissionsGroupByPid'
+        ));
     }
 
+    /**
+     * 欢迎页
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function welcome()
     {
         $statistics = [];
@@ -42,11 +51,20 @@ class HomeController extends Controller
         return view('admin.home.welcome', compact('server', 'statistics'));
     }
 
+    /**
+     * 修改密码
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
     public function changePassword()
     {
         return view('admin.home.password');
     }
 
+    /**
+     * 修改密码保存
+     * @param AdminRequest $request
+     * @return mixed
+     */
     public function doChangePassword(AdminRequest $request)
     {
         // 检查旧密码是否正确
@@ -62,7 +80,7 @@ class HomeController extends Controller
         $db = $admin->save();
 
         if ($db) {
-            return business_handler_user()->success('', '密码修改成功');
+            return business_handler_user()->success([], '密码修改成功');
         }
         return business_handler_user()->fail('密码修改失败');
     }

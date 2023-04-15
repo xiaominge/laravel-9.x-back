@@ -4,7 +4,6 @@ namespace App\Facades;
 
 use App\Constant\BusinessCode;
 use Illuminate\Support\Facades\Facade;
-use App\Foundation\Response\BusinessHandler as ResponseBusinessHandler;
 
 /**
  * @method static mixed ok($data = [], $message = "OK", $businessCode = BusinessCode::HTTP_OK, $headers = []);
@@ -12,6 +11,9 @@ use App\Foundation\Response\BusinessHandler as ResponseBusinessHandler;
  * @method static mixed failed($message, $data, $statusCode, $businessCode, $header = []);
  * @method static mixed internalServerError($message = "", $data = [], $businessCode = BusinessCode::HTTP_INTERNAL_SERVER_ERROR, $headers = []);
  * @method static mixed notFound($message = "", $data = [], $businessCode = BusinessCode::HTTP_NOT_FOUND, $headers = []);
+ *
+ * @see \App\Foundation\Response\BusinessHandler
+ *
  */
 class BusinessHandler extends Facade
 {

@@ -20,10 +20,14 @@ class PermissionService extends Service
             ];
             $query->select($fields);
         };
-        $permissions = Auth::guard('admin')->user()
-            ->roles()->with(['permissions' => $callback])
-            ->get()->pluck('permissions')
-            ->collapse()->unique('id');
+
+        $permissions = auth_admin()
+            ->roles() // 管理员用户的角色
+            ->with(['permissions' => $callback]) // 角色的权限
+            ->get()
+            ->pluck('permissions')
+            ->collapse()
+            ->unique('id');
 
         return $permissions;
     }

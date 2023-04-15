@@ -1,6 +1,6 @@
 <div class="container">
     <div class="logo">
-        <a href="{{ route('admin.home') }}">{{ config('app.name') . "管理平台" }}</a>
+        <a href="{{ route('admin.home.index') }}">{{ config('app.name') . "管理平台" }}</a>
     </div>
     <div class="left_open">
         <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
