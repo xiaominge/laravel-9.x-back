@@ -10,6 +10,7 @@ use App\Services\ServiceHandle;
 use App\Constant\DateFormat;
 use App\Foundation\Util\Html;
 use App\Foundation\Logger\LoggerHandler;
+use App\Foundation\Util\Guzzle\Handler as GuzzleHandler;
 
 if (!function_exists('repository')) {
     function repository()
@@ -66,6 +67,29 @@ if (!function_exists('logger_handler')) {
     function logger_handler()
     {
         return new LoggerHandler();
+    }
+}
+
+if (!function_exists('guzzle_handler')) {
+    /**
+     * 获取 Guzzle Handler
+     * @return GuzzleHandler
+     */
+    function guzzle_handler()
+    {
+        return new GuzzleHandler;
+    }
+}
+
+if (!function_exists('guzzle_client')) {
+    /**
+     * 获取 Guzzle Client
+     * @param $config
+     * @return \GuzzleHttp\Client
+     */
+    function guzzle_client($config = [])
+    {
+        return guzzle_handler()->getClient($config);
     }
 }
 

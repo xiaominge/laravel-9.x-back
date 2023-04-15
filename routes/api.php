@@ -23,8 +23,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  */
 Route::middleware(['common'])
     ->get('/test', function () {
+
+        $response = guzzle_client()->request('get', 'https://api.jisuapi.com/weather/query');
+        $responseContents = $response->getBody()->getContents();
+        return business_handler()->ok(json_decode($responseContents, true));
+
         $requestJson = request_json_payload();
-//        print_r($requestJson);
 
         $userId = 31;
         $targetId = 21;

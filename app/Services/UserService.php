@@ -18,11 +18,14 @@ class UserService extends Service
             '(｡･∀･)ﾉﾞ嗨',
             '你好呀~',
         ];
+        $dateTime = date('Y-m-d H:i:s', time());
+        $expiredAt = new \MongoDB\BSON\UTCDateTime(new \DateTime($dateTime));
         $createData = [
             'user_id' => (int)$userId,
             'target_id' => (int)$targetId,
             'msg' => array_random($randMessage),
             'created_at' => time(),
+            'expired_at' => $expiredAt,
         ];
         if (mongodb('user_seen')->insert($createData)) {
             return result_return()->success([$userId => $targetId]);
