@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use App\Foundation\Model;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
-class Permission extends Model
+class Permission extends Eloquent
 {
+    use Model;
+
     protected $table = 'permissions';
     public $timestamps = false;
 

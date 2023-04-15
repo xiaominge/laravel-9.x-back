@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Log;
  * @method void info(string $message, array $context = [])
  * @method void debug(string $message, array $context = [])
  */
-class LoggerHandler
+class Handler
 {
     protected string $logType = 'general';
     protected array $methods = ['notice', 'emergency', 'alert', 'critical', 'error', 'warning', 'info', 'debug'];

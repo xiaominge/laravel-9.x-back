@@ -5,10 +5,10 @@ namespace App\Foundation\Logger;
 use Monolog\Formatter\LogstashFormatter;
 
 /**
- * Class LoggerFormatHandler
+ * Class FormatHandler
  * @package App\Foundation\Logger
  */
-class LoggerFormatHandler
+class FormatHandler
 {
     /**
      * Set the custom logger format instance.

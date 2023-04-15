@@ -16,7 +16,7 @@ class PermissionRepository extends Repository
 
     public function findById($id)
     {
-        $model = $this->m()->where('deleted_at', 0)->find($id);
+        $model = $this->m()->undeleted()->find($id);
         if (!$model) {
             throw new BusinessException('权限不存在或已被删除');
         }
@@ -25,7 +25,7 @@ class PermissionRepository extends Repository
 
     public function all()
     {
-        return $this->m()->where('deleted_at', 0)->get();
+        return $this->m()->undeleted()->get();
     }
 
     /**

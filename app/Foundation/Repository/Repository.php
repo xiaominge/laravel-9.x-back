@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class Repository implements RepositoryInterface
 {
     /**
-     * @var \App\Foundation\Model|mixed
+     * @var \Illuminate\Database\Eloquent\Model|mixed
      */
     protected $model;
     /**
@@ -27,8 +27,7 @@ abstract class Repository implements RepositoryInterface
      */
     public function __construct()
     {
-        $model = $this->makeModel();
-        return $model;
+        $this->makeModel();
     }
 
     /**
@@ -44,7 +43,7 @@ abstract class Repository implements RepositoryInterface
             throw new Exception("Class {$this->model()} must be an instance of Illuminate\\Database\\Eloquent\\Model");
         }
 
-        return $this->model = $model;
+        $this->model = $model;
     }
 
     /**

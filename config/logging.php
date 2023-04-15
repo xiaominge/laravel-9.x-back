@@ -56,14 +56,14 @@ return [
 
         'single' => [
             'driver' => 'single',
-            'tap' => [\App\Foundation\Logger\LoggerFormatHandler::class],
+            'tap' => [\App\Foundation\Logger\FormatHandler::class],
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 
         'daily' => [
             'driver' => 'daily',
-            'tap' => [\App\Foundation\Logger\LoggerFormatHandler::class],
+            'tap' => [\App\Foundation\Logger\FormatHandler::class],
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 600,

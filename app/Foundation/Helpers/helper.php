@@ -53,7 +53,7 @@ if (!function_exists('disk_path')) {
         $diskPrefix = $diskPaths[$diskNo];
 
         return [
-            'db_path' => $diskPrefix . $path,
+            'disk_path' => $diskPrefix . $path,
         ];
     }
 }
@@ -88,3 +88,17 @@ if (!function_exists('get_md5_random_str')) {
     }
 }
 
+if (!function_exists('is_valid_url')) {
+    /**
+     * 检验 url 是否有效
+     * @param $url
+     * @return bool
+     */
+    function is_valid_url($url)
+    {
+        // 获取头信息数组
+        $array = get_headers($url, true);
+        // 状态码是否 200
+        return preg_match('/200/', $array[0]);
+    }
+}

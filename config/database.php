@@ -45,6 +45,8 @@ return [
 
         'mysql' => [
             'driver' => 'mysql',
+            'read' => db_slaves('DB_READ', 'host:127.0.0.1,port:3306'),
+            'write' => db_slaves('DB_WRITE', 'host:127.0.0.1,port:3306'),
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),

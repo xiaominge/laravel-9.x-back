@@ -9,7 +9,7 @@ use App\Repositories\RepositoryHandler;
 use App\Services\ServiceHandle;
 use App\Constant\DateFormat;
 use App\Foundation\Util\Html;
-use App\Foundation\Logger\LoggerHandler;
+use App\Foundation\Logger\Handler as LoggerHandler;
 use App\Foundation\Util\Guzzle\Handler as GuzzleHandler;
 
 if (!function_exists('repository')) {
@@ -61,7 +61,6 @@ if (!function_exists('result_return')) {
 if (!function_exists('logger_handler')) {
     /**
      * Return LoggerHandler object
-     *
      * @return LoggerHandler
      */
     function logger_handler()
@@ -160,6 +159,31 @@ if (!function_exists('mongodb')) {
     function mongodb($table)
     {
         return DB::connection('mongodb')->collection($table);
+    }
+}
+
+if (!function_exists('db_slaves')) {
+    /**
+     * Get the read-write separation configuration
+     * @param $varname
+     * @param $default
+     * @return array
+     */
+    function db_slaves($varname, $default = null)
+    {
+        $dbSlaves = [];
+
+        $slavesEnv = env($varname, $default);
+        $slaveConfigList = explode(';', $slavesEnv);
+        foreach ($slaveConfigList as $key => $item) {
+            $options = explode(',', $item);
+            foreach ($options as $option) {
+                [$optionKey, $optionValue] = explode(':', $option);
+                $dbSlaves[$key][$optionKey] = $optionValue;
+            }
+        }
+
+        return $dbSlaves;
     }
 }
 

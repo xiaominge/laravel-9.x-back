@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Foundation\Context\ContextHandler;
+use App\Foundation\Context\ContextHandler as ContextHandler;
 use App\Foundation\Response\BusinessHandler;
 use App\Foundation\Response\BusinessHandlerUser;
 use App\Foundation\ResultReturn\ResultReturn;

@@ -16,7 +16,7 @@ class AdminRepository extends Repository
 
     public function findById($id)
     {
-        $model = $this->m()->where('deleted_at', 0)->find($id);
+        $model = $this->m()->undeleted()->find($id);
         if (!$model) {
             throw new BusinessException('管理员不存在或已被删除');
         }

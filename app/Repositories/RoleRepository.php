@@ -21,7 +21,7 @@ class RoleRepository extends Repository
      */
     public function getAdminRoles()
     {
-        return $this->model->where('deleted_at', 0)->get();
+        return $this->model->undeleted()->get();
     }
 
     /**
@@ -34,7 +34,7 @@ class RoleRepository extends Repository
      */
     public function findById($id)
     {
-        $model = $this->model->where('deleted_at', 0)->find($id);
+        $model = $this->model->undeleted()->find($id);
         if (!$model) {
             throw new BusinessException('角色不存在或已被删除');
         }
@@ -44,6 +44,6 @@ class RoleRepository extends Repository
 
     public function paginateGetAllRoles($num)
     {
-        return $this->m()->where('deleted_at', '0')->paginate($num);
+        return $this->m()->undeleted()->paginate($num);
     }
 }
