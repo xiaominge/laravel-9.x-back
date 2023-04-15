@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Foundation\Model;
+use App\Foundation\Trait\Model;
 use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class Permission extends Eloquent

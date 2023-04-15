@@ -1,8 +1,6 @@
 <?php
 
-namespace App\Foundation\Util;
-
-use App\Foundation\Util\Html\Builder;
+namespace App\Foundation\Util\Html;
 
 class Html
 {

@@ -24,11 +24,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware(['common'])
     ->get('/test', function () {
 
+        $return = [];
+
         $response = guzzle_client()->request('get', 'https://api.jisuapi.com/weather/query');
         $responseContents = $response->getBody()->getContents();
-        return business_handler()->ok(json_decode($responseContents, true));
+        $return['responseContents'] = json_decode($responseContents, true);
 
         $requestJson = request_json_payload();
+        $return['requestJson'] = $requestJson;
+        $return['os'] = user_agent()->os;
 
         $userId = 31;
         $targetId = 21;
@@ -40,10 +44,11 @@ Route::middleware(['common'])
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            return business_handler()->ok($latestInfo);
+            $return['latestInfo'] = $latestInfo;
+            return business_handler()->ok($return);
         }
 
-        return business_handler()->notFound("未找到记录");
+        return business_handler()->notFound("未找到记录", $return);
     });
 
 Route::middleware(['common'])

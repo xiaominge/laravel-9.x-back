@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Foundation;
+namespace App\Foundation\Trait;
 
 /**
  * Trait Model

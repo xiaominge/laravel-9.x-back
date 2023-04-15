@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Foundation\Trait\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use App\Foundation\Model;
 
 class Admin extends Authenticatable
 {

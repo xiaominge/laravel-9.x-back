@@ -4,7 +4,7 @@ namespace App\Foundation\Service;
 
 use App\Exceptions\BusinessException;
 
-class ServiceHandle
+class ServiceHandler
 {
     protected static $instance;
     protected static $pockets;

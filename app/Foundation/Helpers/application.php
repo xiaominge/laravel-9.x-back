@@ -1,16 +1,18 @@
 <?php
 
 use BeyondCode\DumpServer\Dumper;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
-use App\Repositories\RepositoryHandler;
-use App\Services\ServiceHandle;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use App\Constant\DateFormat;
-use App\Foundation\Util\Html;
+use App\Services\ServiceHandler;
+use App\Repositories\RepositoryHandler;
 use App\Foundation\Logger\Handler as LoggerHandler;
+use App\Foundation\Util\Html\Html;
 use App\Foundation\Util\Guzzle\Handler as GuzzleHandler;
+use App\Foundation\Util\UserAgent\UserAgent;
 
 if (!function_exists('repository')) {
     function repository()
@@ -22,8 +24,8 @@ if (!function_exists('repository')) {
 if (!function_exists('service')) {
     function service()
     {
-        // dd(ServiceHandle::getInstance() === ServiceHandle::getInstance());
-        return ServiceHandle::getInstance();
+        // dd(ServiceHandler::getInstance() === ServiceHandler::getInstance());
+        return ServiceHandler::getInstance();
     }
 }
 
@@ -115,6 +117,21 @@ if (!function_exists('context')) {
         return is_null($value) ? value($default) : $value;
     }
 }
+
+if (!function_exists('user_agent')) {
+    function user_agent()
+    {
+        return new UserAgent;
+    }
+}
+
+if (!function_exists('storage_disk')) {
+    function storage_disk($name = 'base')
+    {
+        return Storage::disk($name);
+    }
+}
+
 if (!function_exists('auth_admin')) {
     /**
      * 获取后台登录用户
@@ -159,6 +176,37 @@ if (!function_exists('mongodb')) {
     function mongodb($table)
     {
         return DB::connection('mongodb')->collection($table);
+    }
+}
+
+if (!function_exists('separation_user_agent')) {
+    /**
+     * Separation user_agent
+     *  --- app/1.2.3 (iPhone 17 Plus) iOS/17.2.6
+     * @param $userAgent
+     * @return array|string[]
+     */
+    function separation_user_agent($userAgent)
+    {
+        if (preg_match('/^(.*)\/(.*) \((.*)\) (.*)\/(.*)$/', $userAgent, $matches)) {
+            return [
+                'os' => $matches[4],
+                'os_version' => $matches[5],
+                'client_type' => 'mobile app',
+                'client_name' => $matches[1],
+                'client_version' => $matches[2],
+                'device' => $matches[3],
+            ];
+        } else {
+            return [
+                'os' => '',
+                'os_version' => '',
+                'client_type' => 'mobile app',
+                'client_name' => '',
+                'client_version' => '',
+                'device' => '',
+            ];
+        }
     }
 }
 

@@ -2,13 +2,13 @@
 
 namespace App\Services;
 
-use App\Foundation\Service\ServiceHandle as ServiceHandleBase;
+use App\Foundation\Service\ServiceHandler as BaseServiceHandler;
 
 /**
  * @property PermissionService $permission
  * @property UserService $user
  */
-class ServiceHandle extends ServiceHandleBase
+class ServiceHandler extends BaseServiceHandler
 {
     protected static $registerList = array(
         'permission' => PermissionService::class,
