@@ -13,6 +13,7 @@ cd laravel-9.x-back
 ```bash
 composer install
 cp .env.example .env
+php artisan key:generate
 ```
 
 ### 数据库操作
@@ -23,7 +24,10 @@ cp .env.example .env
 
 3、修改 .env 配置文件中的数据库连接信息
 
+### 服务器配置
+
 ### 登录
+
 账号: admin
 
 密码: 111111
