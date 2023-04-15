@@ -25,7 +25,7 @@ class RoleStoreRequestLog implements ShouldQueue
      * 任务被处理的延迟时间（秒）
      * @var string
      */
-    public $delay = '0';
+    public $delay = '300';
 
     /**
      * Create the event listener.

@@ -14,7 +14,7 @@ class BusinessHandlerUser
      * @param $data
      * @param $msg
      * @param $businessCode
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function success($data = [], $msg = '操作成功!', $businessCode = BusinessCode::HTTP_OK)
     {
@@ -26,7 +26,7 @@ class BusinessHandlerUser
      * @param $msg
      * @param $data
      * @param $businessCode
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function fail($msg = '操作失败!', $data = [], $businessCode = BusinessCode::HTTP_INTERNAL_SERVER_ERROR)
     {
@@ -34,15 +34,15 @@ class BusinessHandlerUser
     }
 
     /**
-     * 获取响应返回值
+     * 获取响应返回值（HTTP 状态码 200）
      * @param $data
      * @param $msg
      * @param $businessCode
-     * @return mixed
+     * @return \Illuminate\Http\JsonResponse
      */
     public function done($data, $msg, $businessCode)
     {
-        return BusinessHandler::ok($data, $msg, $businessCode);
+        return business_handler()->ok($data, $msg, $businessCode);
     }
 
     /**

@@ -57,12 +57,12 @@
                                         <td>{{ time_format($role->updated_at) }}</td>
                                         <td class="td-manage">
                                             <a title="编辑"
-                                               data-url="{{ split_url(route('admin.roles.edit', ['id' => $role->id]))[1] }}"
+                                               data-url="{{ split_url(route('admin.roles.edit', $role))[1] }}"
                                                onclick="editRole(this)"
                                                href="javascript:;">
                                                 <i class="layui-icon">&#xe642;</i>
                                             </a>
-                                            <a title="删除" data-url="{{ route('admin.roles.destroy', $role->id) }}"
+                                            <a title="删除" data-url="{{ route('admin.roles.destroy', $role) }}"
                                                onclick="delRole(this)" href="javascript:;">
                                                 <i class="layui-icon">&#xe640;</i>
                                             </a>

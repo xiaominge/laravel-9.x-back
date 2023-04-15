@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use App\Constant\DateFormat;
 use App\Services\ServiceHandler;
 use App\Repositories\RepositoryHandler;
@@ -127,6 +128,13 @@ if (!function_exists('storage_disk')) {
     function storage_disk($name = 'public')
     {
         return Storage::disk($name);
+    }
+}
+
+if (!function_exists('cache_store')) {
+    function cache_store($name = 'redis')
+    {
+        return Cache::store($name);
     }
 }
 

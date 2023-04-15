@@ -6,11 +6,11 @@ use App\Constant\BusinessCode;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static mixed ok($data = [], $message = "OK", $businessCode = BusinessCode::HTTP_OK, $headers = []);
- * @method static mixed succeed($data, $message, $statusCode, $businessCode, $header = []);
- * @method static mixed failed($message, $data, $statusCode, $businessCode, $header = []);
- * @method static mixed internalServerError($message = "", $data = [], $businessCode = BusinessCode::HTTP_INTERNAL_SERVER_ERROR, $headers = []);
- * @method static mixed notFound($message = "", $data = [], $businessCode = BusinessCode::HTTP_NOT_FOUND, $headers = []);
+ * @method static \Illuminate\Http\JsonResponse ok($data = [], $message = "OK", $businessCode = BusinessCode::HTTP_OK, $headers = []);
+ * @method static \Illuminate\Http\JsonResponse internalServerError($message = "", $data = [], $businessCode = BusinessCode::HTTP_INTERNAL_SERVER_ERROR, $headers = []);
+ * @method static \Illuminate\Http\JsonResponse notFound($message = "", $data = [], $businessCode = BusinessCode::HTTP_NOT_FOUND, $headers = []);
+ * @method static \Illuminate\Http\JsonResponse succeed($data, $message, $statusCode, $businessCode, $header = []);
+ * @method static \Illuminate\Http\JsonResponse failed($message, $data, $statusCode, $businessCode, $header = []);
  *
  * @see \App\Foundation\Response\BusinessHandler
  *

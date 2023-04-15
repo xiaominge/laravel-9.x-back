@@ -105,6 +105,30 @@ Route::middleware(['common'])
             $return['time']['substr'] = $return['time']['substr_end'] - $return['time']['substr_start'];
             $return['time']['sprintf'] = $return['time']['sprintf_end'] - $return['time']['sprintf_start'];
             $return['time']['bc'] = $return['time']['bc_end'] - $return['time']['bc_start'];
+        } else if ($part == 'cache') {
+            $adminsRedisKey = config('redis_store.test.admins.key');
+            $adminsRedisTtl = config('redis_store.test.admins.ttl');
+            $rolesRedisKey = config('redis_store.test.roles.key');
+            $rolesRedisTtl = config('redis_store.test.roles.ttl');
+            $uidRedisKey = config('redis_store.counter.user_uid');
+
+            $admins = cache_store()->remember($adminsRedisKey, $adminsRedisTtl, function () {
+                return repository()->admin->m()->get()->toArray();
+            });
+            $roles = repository()->role->m()->get()->toArray();
+            $rolesPutRet = cache_store()
+                ->tags(['role', 'info'])
+                ->put($rolesRedisKey, $roles, $rolesRedisTtl);
+            $rolesRet = $rolesPutRet ? cache_store()
+                ->tags('role', 'info')
+                ->get($rolesRedisKey) : '';
+            $uid = redis()->incr($uidRedisKey);
+
+            // $permission = repository()->permission->m()->findOrFail(99);
+
+            $return['cache'][$adminsRedisKey] = $admins;
+            $return['cache'][$rolesRedisKey] = $rolesRet;
+            $return['cache'][$uidRedisKey] = $uid;
         }
 
         return business_handler_user()->success($return);

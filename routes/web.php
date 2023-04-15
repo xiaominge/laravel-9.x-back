@@ -33,10 +33,10 @@ Route::middleware(['common'])
                 ->orderBy('created_at', 'desc')
                 ->first();
 
-            return business_handler()->ok($latestInfo);
+            return business_handler_user()->success($latestInfo);
         }
 
-        return business_handler()->notFound("未找到记录");
+        return business_handler_user()->fail("未找到记录");
     });
 
 // 后台登录
@@ -70,7 +70,7 @@ Route::middleware(['auth.admin'])
             });
 
         // 错误页面
-        Route::get('admin/error', ['ErrorController', 'index'])->name('error');
+        Route::get('admin/error', 'ErrorController@index')->name('error');
 
         // 用户角色
         Route::controller('RoleController')

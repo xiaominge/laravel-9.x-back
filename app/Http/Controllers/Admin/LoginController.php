@@ -12,16 +12,16 @@ class LoginController extends Controller
     use AuthenticatesUsers;
 
     /**
-     * Where to redirect users after login / registration.
+     * 登录成功后跳转到的链接
      *
      * @var string
      */
     protected $redirectTo = '/admin';
 
     /**
-     * Show the application's login form.
+     * 登录表单页面
      *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function showLoginForm()
     {
@@ -29,7 +29,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Get the login username to be used by the controller.
+     * 登录用户字段名
      *
      * @return string
      */
@@ -39,7 +39,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Get the guard to be used during authentication.
+     * 登录所用的看守器
      *
      * @return mixed
      */
@@ -49,10 +49,10 @@ class LoginController extends Controller
     }
 
     /**
-     * The user has been authenticated.
+     * 认证成功返回的响应
      * @param Request $request
      * @param $user
-     * @return \Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Http\JsonResponse
      */
     protected function authenticated(Request $request, $user)
     {
@@ -60,7 +60,7 @@ class LoginController extends Controller
     }
 
     /**
-     * The user has logged out of the application.
+     * 返回用户登出的响应
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
