@@ -14,8 +14,9 @@ class RoleController extends Controller
     public function store()
     {
         $requestJson = request_json_payload();
-//        print_r($requestJson);
-//        die;
+
+        logger_handler()->setLogType('role_store')->info($requestJson);
+
         return business_handler()->ok($requestJson);
     }
 }

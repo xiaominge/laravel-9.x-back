@@ -9,6 +9,7 @@ use App\Repositories\RepositoryHandler;
 use App\Services\ServiceHandle;
 use App\Constant\DateFormat;
 use App\Foundation\Util\Html;
+use App\Foundation\Logger\LoggerHandler;
 
 if (!function_exists('repository')) {
     function repository()
@@ -53,6 +54,18 @@ if (!function_exists('result_return')) {
     function result_return()
     {
         return app('resultReturn');
+    }
+}
+
+if (!function_exists('logger_handler')) {
+    /**
+     * Return LoggerHandler object
+     *
+     * @return LoggerHandler
+     */
+    function logger_handler()
+    {
+        return new LoggerHandler();
     }
 }
 
