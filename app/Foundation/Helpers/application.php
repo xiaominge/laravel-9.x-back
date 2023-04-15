@@ -311,12 +311,56 @@ if (!function_exists('time_format')) {
     }
 }
 
-function style()
-{
-    return Html::style(...func_get_args());
+if (!function_exists('style')) {
+    function style()
+    {
+        return Html::style(...func_get_args());
+    }
 }
 
-function script()
-{
-    return Html::script(...func_get_args());
+if (!function_exists('script')) {
+    function script()
+    {
+        return Html::script(...func_get_args());
+    }
+}
+
+if (!function_exists('append_paginator_param')) {
+    function append_paginator_param($paginator)
+    {
+        return $paginator->appends(request()->except('page'));
+    }
+}
+
+if (!function_exists('db_listen')) {
+    function db_listen()
+    {
+        $callBack = function ($query) {
+            logger_handler()
+                ->setLogType('db_listen')
+                ->info('', [
+                    'sql' => $query->sql,
+                    'bindings' => $query->bindings,
+                    'time' => $query->time,
+                ]);
+        };
+        DB::listen($callBack);
+    }
+}
+
+if (!function_exists('response_view')) {
+    /**
+     * 视图响应
+     * @param $view
+     * @param $data
+     * @param $header
+     * @param $status
+     * @return \Illuminate\Http\Response
+     */
+    function response_view($view, $data = [], $header = [], $status = 200)
+    {
+        $header['T-Request-Business'] = get_millisecond() - context('request_start_time');
+        $header['T-Request'] = round((microtime(true) - LARAVEL_START) * 1000);
+        return response()->view($view, $data, $status, $header);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Constant\Paginator;
 use App\Exceptions\BusinessException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleRequest;
@@ -12,21 +13,22 @@ class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['admin.permission.verify']);
     }
 
     public function index()
     {
-        $limit = request('limit', 10);
+        $limit = request('limit', Paginator::PAGE_SIZE);
         $roles = repository()->role->paginateGetAllRoles($limit);
-        return view('admin.roles.index')->with('rolesData', $roles);
+        return response_view('admin.roles.index', [
+            'rolesData' => $roles,
+        ]);
     }
 
     public function create()
     {
         // 查出所有权限
         $permissions = repository()->permission->allNestPermissions();
-        return view('admin.roles.create', compact('permissions'));
+        return response_view('admin.roles.create', compact('permissions'));
     }
 
     public function store(RoleRequest $request)
@@ -59,9 +61,10 @@ class RoleController extends Controller
     }
 
     /**
+     * 编辑角色
      * @param Request $request
      * @param $id
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\View\View
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
@@ -77,14 +80,14 @@ class RoleController extends Controller
         }
         $currentPermissions = $role->permissions->pluck('id')->toArray();
         $currentPermissions = implode(',', $currentPermissions);
-        return view('admin.roles.edit', compact('role', 'permissions', 'currentPermissions'));
+        return response_view('admin.roles.edit', compact('role', 'permissions', 'currentPermissions'));
     }
 
     /**
+     * 更新角色
      * @param RoleRequest $request
-     * @param             $id
-     *
-     * @return
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(RoleRequest $request, $id)
     {
@@ -101,6 +104,7 @@ class RoleController extends Controller
         ];
         $permissions = repository()->permission->all();
         $permissions = repository()->permission->getSuperiorPermissions($request->permissions, $permissions);
+//        dd($permissions);
         $permissions = array_unique($permissions);
         $addPermissions = [];
         foreach ($permissions as $p) {

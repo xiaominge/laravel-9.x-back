@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    {{ $rolesData->links('admin.common.page', ['paginator' => $rolesData]) }}
+                    {{ $rolesData->links() }}
 
                 </div>
             </div>
@@ -98,16 +98,23 @@
                     'data': {_method: 'delete'},
                     'successCallBack': function (res) {
                         if (res.code === 2000000) {
-                            layer.msg(res.message, {icon: 6, time: 1500}, function () {
+                            layer.msg(res.message, {icon: 6, time: 2000}, function () {
                                 location.reload();
                             });
                         } else {
-                            layer.msg(res.message, {icon: 5, time: 1500});
+                            layer.msg(res.message, {icon: 5, time: 2000});
                         }
                     },
                 });
             });
         }
 
+        layui.use(['layer'], function () {
+            var layer = layui.layer;
+            @if(count($errors) > 0)
+            parent.layer.closeAll();
+            parent.layer.msg('{{ $errors->first() }}', {icon: 5, time: 2000});
+            @endif
+        });
     </script>
 @endsection

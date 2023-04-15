@@ -9,7 +9,7 @@ namespace App\Foundation\Repository;
 interface RepositoryInterface
 {
     /**
-     * set model
+     * 返回模型类名
      * @return mixed
      */
     public function model();

@@ -29,7 +29,9 @@ class AdminPermissionVerify
         if (in_array($routeName, $userPermissions)) {
             return $next($request);
         } else {
-            Log::channel('stack')->info('NO-AUTH: ' . $routeName);
+            logger_handler()
+                ->setLogType('admin-permission-verify')
+                ->info('NO-AUTH: ' . $routeName);
             return $this->returnErrorMsg('您没有相关权限执行该操作');
         }
     }

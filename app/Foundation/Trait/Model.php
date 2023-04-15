@@ -4,9 +4,9 @@ namespace App\Foundation\Trait;
 
 /**
  * Trait Model
- * @package App\Foundation
+ * @package App\Foundation\Trait
  *
- * @method \Illuminate\Database\Eloquent\Builder undeleted() => scopeUndeleted
+ * @method \Illuminate\Database\Eloquent\Builder undeleted($query)
  *
  */
 trait Model

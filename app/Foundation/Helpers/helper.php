@@ -159,3 +159,41 @@ if (!function_exists('is_valid_url')) {
         return preg_match('/200/', $array[0]);
     }
 }
+
+if (!function_exists('array_to_object')) {
+    /**
+     * 多维数组转对象
+     * @param $data
+     * @return mixed|object
+     */
+    function array_to_object($data)
+    {
+        if (is_array($data)) {
+            $data = array_map(__FUNCTION__, $data);
+            return (object)$data;
+        } else {
+            return $data;
+        }
+    }
+}
+
+if (!function_exists('get_with_children')) {
+    /**
+     * 获取包含子节点的层级结构
+     * @param $list
+     * @param $pid
+     * @return array
+     */
+    function get_with_children($list, $pid = 0): array
+    {
+        $data = array();
+        foreach ($list as $k => $item) {
+            if ($item['pid'] == $pid) {
+                $children = get_with_children($list, $item['id']);
+                $item['children'] = $children;
+                $data[] = $item;
+            }
+        }
+        return $data;
+    }
+}

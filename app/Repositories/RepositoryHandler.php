@@ -12,9 +12,10 @@ use App\Foundation\Repository\RepositoryHandler as RepositoryHandlerBase;
 class RepositoryHandler extends RepositoryHandlerBase
 {
     /**
-     * @var string[]
+     * 注册仓库名称列表
+     * @var array|string[]
      */
-    protected static $registerList = [
+    protected static array $registerList = [
         'admin' => AdminRepository::class,
         'role' => RoleRepository::class,
         'permission' => PermissionRepository::class,

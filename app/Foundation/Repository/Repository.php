@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 abstract class Repository implements RepositoryInterface
 {
     /**
-     * @var \Illuminate\Database\Eloquent\Model|mixed
+     * @var Model|\App\Foundation\Trait\Model
      */
     protected $model;
     /**
@@ -21,8 +21,7 @@ abstract class Repository implements RepositoryInterface
     protected $query = null;
 
     /**
-     * Repository constructor.
-     *
+     * 解析数据模型
      * @throws Exception
      */
     public function __construct()
@@ -31,12 +30,11 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Instantiation model
-     *
-     * @return Model|mixed
+     * 解析数据模型
+     * @return void
      * @throws Exception
      */
-    public function makeModel()
+    public function makeModel(): void
     {
         $model = app($this->model());
         if (!$model instanceof Model) {
@@ -47,9 +45,8 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Get attribute model
-     *
-     * @return Model|\Illuminate\Database\Eloquent\Builder
+     * 获取数据模型
+     * @return Model|\App\Foundation\Trait\Model|\Illuminate\Database\Eloquent\Builder
      */
     public function m()
     {
@@ -57,14 +54,12 @@ abstract class Repository implements RepositoryInterface
     }
 
     /**
-     * Get attribute query
-     *
-     * @param bool $is_new
-     *
-     * @return \Illuminate\Database\Eloquent\Builder
+     * 获取查询构造器
+     * @param bool $isNew
+     * @return \Illuminate\Database\Eloquent\Builder|null
      */
-    public function getQuery($is_new = false)
+    public function getQuery(bool $isNew = true)
     {
-        return $this->query || $is_new ? $this->query : $this->model->query();
+        return $isNew || empty($this->query) ? $this->model->query() : $this->query;
     }
 }

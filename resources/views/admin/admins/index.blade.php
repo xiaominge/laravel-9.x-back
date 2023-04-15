@@ -81,7 +81,7 @@
                         </div>
                     </div>
 
-                    {{ $admins->links('admin.common.page', ['paginator' => $admins]) }}
+                    {{ $admins->links() }}
 
                 </div>
             </div>
@@ -91,13 +91,19 @@
 
 @section('bottom-js')
     <script>
-        layui.use('element', function () {
+        layui.use(['element', 'layer'], function () {
             var element = layui.element;
+            var layer = layui.layer;
             // 监听Tab切换
             element.on('tab(user-role)', function (data) {
                 var layId = this.getAttribute('lay-id');
                 location.href = '{{ route("admin.admins.index") }}' + '?id=' + layId;
             });
+
+            @if(count($errors) > 0)
+            parent.layer.closeAll();
+            parent.layer.msg('{{ $errors->first() }}', {icon: 5, time: 2000});
+            @endif
         });
 
         function editAdmin(obj) {
@@ -113,16 +119,15 @@
                     'data': {_method: 'delete'},
                     'successCallBack': function (res) {
                         if (res.code === 2000000) {
-                            layer.msg(res.message, {icon: 6, time: 1500}, function () {
+                            layer.msg(res.message, {icon: 6, time: 2000}, function () {
                                 element.tabChange("user-role", $("#user-role-ul").data('current-role'));
                             });
                         } else {
-                            layer.msg(res.message, {icon: 5, time: 1500});
+                            layer.msg(res.message, {icon: 5, time: 2000});
                         }
                     },
                 });
             });
         }
-
     </script>
 @endsection

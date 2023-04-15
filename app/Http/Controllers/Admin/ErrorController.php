@@ -14,6 +14,6 @@ class ErrorController extends Controller
 
     public function index()
     {
-        return view('admin.common.error');
+        return response_view('admin.common.error');
     }
 }

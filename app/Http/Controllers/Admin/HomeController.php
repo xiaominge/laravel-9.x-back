@@ -15,7 +15,6 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['auth.admin']);
     }
 
     /**
@@ -25,15 +24,14 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $permissions = service()
-            ->permission
+        $permissions = service()->permission
             ->getLoginAdminPermission()
             ->sortByDesc('sort')
             ->values();
         $topMenus = $permissions->where('pid', 0)->toArray();
         $permissionsGroupByPid = $permissions->groupBy('pid')->toArray();
 //        dd($topMenus, $permissionsGroupByPid, $permissions->toArray());
-        return view('admin.home.home', compact(
+        return response_view('admin.home.home', compact(
             'topMenus', 'permissionsGroupByPid'
         ));
     }
@@ -48,7 +46,7 @@ class HomeController extends Controller
         $server = $_SERVER;
         $statistics['admin'] = repository()->admin->m()->undeleted()->count();
         $statistics['role'] = repository()->role->m()->undeleted()->count();
-        return view('admin.home.welcome', compact('server', 'statistics'));
+        return response_view('admin.home.welcome', compact('server', 'statistics'));
     }
 
     /**
@@ -57,7 +55,7 @@ class HomeController extends Controller
      */
     public function changePassword()
     {
-        return view('admin.home.password');
+        return response_view('admin.home.password');
     }
 
     /**
@@ -68,7 +66,7 @@ class HomeController extends Controller
     public function doChangePassword(AdminRequest $request)
     {
         // 检查旧密码是否正确
-        $admin = auth('admin')->user();
+        $admin = auth_admin();
         if (!Hash::check($request->old_password, $admin->password)) {
             return business_handler_user()->fail('输入的旧密码不正确');
         }

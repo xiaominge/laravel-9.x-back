@@ -7,47 +7,39 @@ use App\Exceptions\BusinessException;
 class RepositoryHandler
 {
     /**
+     * 单例
      * @var object
      */
-    protected static $instance;
-    /**
-     * @var mixed
-     */
-    protected static $registerList;
+    protected static object $instance;
 
     /**
-     * All repository sets
-     * @var mixed
+     * 注册仓库名称列表
+     * @var array
      */
-    protected static $repositories = [];
+    protected static array $registerList = [];
 
     /**
-     * The protected constructor prohibits the creation of an
-     * instance of the current class
-     *
-     * RepositoryHandler constructor.
+     * 所有仓库对象集合
+     * @var array
      */
+    protected static array $repositories = [];
+
+
     public function __construct()
     {
-
     }
 
-    /**
-     * The protected clone magic method forbids the current class
-     * from being cloned
-     */
     protected function __clone()
     {
     }
 
     /**
-     * Returns an instance of the RepositoryHandler class
-     *
-     * @return  $this
+     * 获取类的实例
+     * @return \App\Repositories\RepositoryHandler
      */
     public static function getInstance()
     {
-        if (!static::$instance) {
+        if (empty(static::$instance)) {
             static::$instance = new static();
         }
 
@@ -55,7 +47,8 @@ class RepositoryHandler
     }
 
     /**
-     * register all
+     * 注册所有的仓库
+     * @return void
      */
     public static function registerAll()
     {
@@ -65,9 +58,9 @@ class RepositoryHandler
     }
 
     /**
-     * register someone
-     *
+     * 注册仓库
      * @param $name
+     * @return void
      */
     public static function register($name)
     {
@@ -75,10 +68,8 @@ class RepositoryHandler
     }
 
     /**
-     * Get the corresponding repository object according to different repository names
-     *
+     * 获取仓库
      * @param $name
-     *
      * @return mixed
      * @throws BusinessException
      */

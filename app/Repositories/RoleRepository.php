@@ -25,11 +25,9 @@ class RoleRepository extends Repository
     }
 
     /**
-     * 根据角色ID 获得角色对象
-     *
+     * 根据 ID 获得角色记录
      * @param $id
-     *
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
      * @throws BusinessException
      */
     public function findById($id)

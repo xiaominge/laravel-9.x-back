@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Constant\Paginator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,7 +13,6 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['admin.permission.verify']);
     }
 
     public function index(Request $request)
@@ -29,10 +29,11 @@ class AdminController extends Controller
                     'msg' => $e->getMessage(),
                 ]);
         }
-        $limit = $request->get('limit', 20);
+        $limit = $request->get('limit', Paginator::PAGE_SIZE);
         $admins = $role->admins()->paginate($limit);
+        append_paginator_param($admins);
 
-        return view('admin.admins.index', compact('roleId', 'roles', 'admins'));
+        return response_view('admin.admins.index', compact('roleId', 'roles', 'admins'));
     }
 
     public function create()
@@ -45,15 +46,20 @@ class AdminController extends Controller
                 'name' => $role['name'],
             ];
         }
-        return view('admin.admins.create')->with('roles', json_encode($roles));
+        return response_view('admin.admins.create', [
+            'roles' => json_encode($roles),
+        ]);
     }
 
     public function destroy($id)
     {
-        // 管理员假删除
+        if ($id == auth_admin_id()) {
+            return business_handler_user()->fail('不能删除自己');
+        }
         try {
             DB::beginTransaction();
             $admin = repository()->admin->findById($id);
+            // 管理员假删除
             $admin->update(['deleted_at' => time()]);
             // 管理员与角色关系
             $admin->roles()->update(['admin_role.deleted_at' => time()]);
@@ -103,10 +109,11 @@ class AdminController extends Controller
                     'name' => $role['name'],
                 ];
             }
-            return view('admin.admins.edit')
-                ->with('admin', $admin)
-                ->with('roleIds', $roleIds)
-                ->with('roles', json_encode($roles));
+            return response_view('admin.admins.edit', [
+                'admin' => $admin,
+                'roleIds' => $roleIds,
+                'roles' => json_encode($roles),
+            ]);
         } catch (BusinessException $e) {
             return redirect()
                 ->route('admin.error')

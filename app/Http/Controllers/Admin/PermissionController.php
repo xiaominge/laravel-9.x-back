@@ -11,7 +11,6 @@ class PermissionController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['admin.permission.verify']);
     }
 
     public function index()
@@ -20,7 +19,9 @@ class PermissionController extends Controller
         $permissions = collect($permissions)->map(function ($item) {
             return (object)$item;
         });
-        return view('admin.permissions.index')->with('permissions', $permissions);
+        return response_view('admin.permissions.index', [
+            'permissions' => $permissions,
+        ]);
     }
 
     public function create($pid = null)
@@ -29,7 +30,7 @@ class PermissionController extends Controller
         $permissions = collect($permissions)->map(function ($item) {
             return (object)$item;
         });
-        return view('admin.permissions.create', compact('permissions', 'pid'));
+        return response_view('admin.permissions.create', compact('permissions', 'pid'));
     }
 
     public function store(PermissionRequest $request)
@@ -56,9 +57,10 @@ class PermissionController extends Controller
             $permissions = collect($permissions)->map(function ($item) {
                 return (object)$item;
             });
-            return view('admin.permissions.edit')
-                ->with('permission', $permission)
-                ->with('permissions', $permissions);
+            return response_view('admin.permissions.edit', [
+                'permission' => $permission,
+                'permissions' => $permissions,
+            ]);
         } catch (\Exception $e) {
             return redirect()
                 ->route('admin.error')

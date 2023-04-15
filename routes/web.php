@@ -22,20 +22,16 @@ Route::get('/', function () {
  */
 Route::middleware(['common'])
     ->get('/test', function () {
-
         $userId = 31;
         $targetId = 21;
-
         $insertRet = service()->user->userSeenSaveToMongodb($userId, $targetId);
         if ($insertRet->status === true) {
             $latestInfo = mongodb('user_seen')
                 ->where('target_id', $targetId)
                 ->orderBy('created_at', 'desc')
                 ->first();
-
             return business_handler_user()->success($latestInfo);
         }
-
         return business_handler_user()->fail("未找到记录");
     });
 
@@ -75,6 +71,7 @@ Route::middleware(['auth.admin'])
         // 用户角色
         Route::controller('RoleController')
             ->name('roles.')
+            ->middleware('admin.permission.verify')
             ->group(function () {
                 Route::get('admin/roles', 'index')->name('index');
                 Route::get('admin/roles/create', 'create')->name('create');
@@ -87,6 +84,7 @@ Route::middleware(['auth.admin'])
         // 权限管理
         Route::controller('PermissionController')
             ->name('permissions.')
+            ->middleware('admin.permission.verify')
             ->group(function () {
                 Route::get('admin/permissions', 'index')->name('index');
                 Route::get('admin/permissions/create/{pid?}', 'create')->name('create');
@@ -99,6 +97,7 @@ Route::middleware(['auth.admin'])
         // 管理员管理
         Route::controller('AdminController')
             ->name('admins.')
+            ->middleware('admin.permission.verify')
             ->group(function () {
                 Route::get('admin/admins', 'index')->name('index');
                 Route::get('admin/admins/create', 'create')->name('create');

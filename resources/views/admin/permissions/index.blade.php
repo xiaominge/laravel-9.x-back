@@ -120,26 +120,32 @@
                     'data': {_method: 'delete'},
                     'successCallBack': function (res) {
                         if (res.code === 2000000) {
-                            layer.msg(res.message, {icon: 6, time: 1500}, function () {
+                            layer.msg(res.message, {icon: 6, time: 2000}, function () {
                                 location.reload();
                             });
                         } else {
-                            layer.msg(res.message, {icon: 5, time: 1500});
+                            layer.msg(res.message, {icon: 5, time: 2000});
                         }
                     },
                 });
             });
         }
 
-        layui.use(['jquery', 'iconExtend', 'treeList'], function () {
+        layui.use(['jquery', 'iconExtend', 'treeList', 'layer'], function () {
             var $ = layui.jquery;
             var iconExtend = layui.iconExtend;
             var treeList = layui.treeList;
+            var layer = layui.layer;
 
             iconExtend.loader('iconfont');
             treeList.render({
                 parentId: 'pid',
             });
+
+            @if(count($errors) > 0)
+            parent.layer.closeAll();
+            parent.layer.msg('{{ $errors->first() }}', {icon: 5, time: 2000});
+            @endif
         });
     </script>
 @endsection
