@@ -28,7 +28,7 @@ Route::middleware(['common'])
         $userId = 31;
         $targetId = 21;
         $return = [];
-
+        $return['sprintf'] = sprintf("%.3f", 0.12);
         if ($part == 'weather') {
             try {
                 $response = guzzle_client()->request('get', 'https://api.jisuapi.com/weather/query');
@@ -80,6 +80,31 @@ Route::middleware(['common'])
                 $return['latestInfoMsg'] = "userSeenSaveToMongodb 失败";
                 $return['latestInfoStatus'] = $insertRet->status;
             }
+        } else if ($part == "time") {
+            $arr = [
+                1 => 'substr_start',
+                1000000 => 'substr_end',
+                1000001 => 'sprintf_start',
+                2000000 => 'sprintf_end',
+                2000001 => 'bc_start',
+                3000000 => 'bc_end',
+            ];
+            for ($i = 1; $i <= 3000000; $i++) {
+                if ($i <= 1000000) {
+                    $t = get_millisecond("substr");
+                } else if ($i <= 2000000) {
+                    $t = get_millisecond("sprintf");
+                } else {
+                    $t = get_millisecond("bc");
+                }
+                if (isset($arr[$i])) {
+                    $return['time'][$i] = $i;
+                    $return['time'][$arr[$i]] = $t;
+                }
+            }
+            $return['time']['substr'] = $return['time']['substr_end'] - $return['time']['substr_start'];
+            $return['time']['sprintf'] = $return['time']['sprintf_end'] - $return['time']['sprintf_start'];
+            $return['time']['bc'] = $return['time']['bc_end'] - $return['time']['bc_start'];
         }
 
         return business_handler_user()->success($return);
