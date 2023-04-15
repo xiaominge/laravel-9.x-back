@@ -2,15 +2,38 @@
 
 if (!function_exists('get_millisecond')) {
     /**
-     * Gets the number of milliseconds of the current time
-     *
-     * @return float
+     * 以毫秒为单位，获取当前时间
+     * 毫微纳皮飞
+     * @return int
      */
     function get_millisecond()
     {
-        list($t1, $t2) = explode(' ', microtime());
+        // 高精度数学函数需要字符串类型的参数，所以不用 microtime(true)
+        [$microsecond, $second] = explode(" ", microtime());
+        // 秒数和微秒（以秒为单位的小数表达）数相加，6位小数精确到微秒
+        $second = bcadd($second, $microsecond, 6);
+        // 单位由秒转为毫秒
+        $millisecond = bcmul($second, 1000, 3);
 
-        return (int)sprintf('%.0f', (floatval($t1) + floatval($t2)) * 1000);
+        return intval($millisecond);
+    }
+}
+
+if (!function_exists('get_microsecond')) {
+    /**
+     * 以微秒为单位，获取当前时间
+     * @return int
+     */
+    function get_microsecond()
+    {
+        // 高精度数学函数需要字符串类型的参数，所以不用 microtime(true)
+        [$microsecond, $second] = explode(" ", microtime());
+        // 秒数和微秒（以秒为单位的小数表达）数相加，6位小数精确到微秒
+        $second = bcadd($second, $microsecond, 6);
+        // 单位由秒转为微秒
+        $microsecond = bcmul($second, 1000 * 1000);
+
+        return intval($microsecond);
     }
 }
 

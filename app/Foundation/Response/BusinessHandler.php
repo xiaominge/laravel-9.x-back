@@ -261,13 +261,14 @@ class BusinessHandler
      */
     public function succeed($data, $message, $statusCode, $businessCode, $header = [])
     {
-        $header['request_time'] = get_millisecond() - context()->get('request_start_time');
-
         $response = [
             'code' => $businessCode,
             'message' => $message,
             'data' => $data,
         ];
+
+        $header['T-Request-Business'] = get_millisecond() - context('request_start_time');
+        $header['T-Request'] = round((microtime(true) - LARAVEL_START) * 1000);
 
         return response()->json($response, $statusCode, $header);
     }
@@ -285,13 +286,14 @@ class BusinessHandler
      */
     public function failed($message, $data, $statusCode, $businessCode, $header = [])
     {
-        $header['request_time'] = request()->get('lq_request_start_time') - get_millisecond();
-
         $response = [
             'code' => $businessCode,
             'message' => $message,
-            'data' => (object)$data,
+            'data' => $data,
         ];
+
+        $header['T-Request-Business'] = get_millisecond() - context('request_start_time');
+        $header['T-Request'] = round((microtime(true) - LARAVEL_START) * 1000);
 
         return response()->json($response, $statusCode, $header);
     }

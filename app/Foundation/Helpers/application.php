@@ -1,6 +1,5 @@
 <?php
 
-use BeyondCode\DumpServer\Dumper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Redis;
@@ -67,7 +66,7 @@ if (!function_exists('logger_handler')) {
      */
     function logger_handler()
     {
-        return new LoggerHandler();
+        return new LoggerHandler;
     }
 }
 
@@ -97,10 +96,9 @@ if (!function_exists('guzzle_client')) {
 if (!function_exists('context')) {
     /**
      * Gets data that is saved only once in the life cycle
-     *
-     * @param null $key
-     * @param null $default
-     * @return \Illuminate\Foundation\Application|mixed
+     * @param $key
+     * @param $default
+     * @return \Illuminate\Contracts\Foundation\Application|mixed
      */
     function context($key = null, $default = null)
     {
@@ -126,7 +124,7 @@ if (!function_exists('user_agent')) {
 }
 
 if (!function_exists('storage_disk')) {
-    function storage_disk($name = 'base')
+    function storage_disk($name = 'public')
     {
         return Storage::disk($name);
     }
@@ -245,9 +243,7 @@ if (!function_exists('is_target_route')) {
 if (!function_exists('set_request_context')) {
     function set_request_context(): void
     {
-        $url = urldecode(parse_url(URL::full(), PHP_URL_QUERY));
-        $query = $url ? url_query_to_array($url) : [];
-        context()->set('request_query', $query);
+        context()->set('request_query', request()->query->all());
         context()->set('request_json_payload', request()->json()->all());
         context()->set('request_header', request()->headers->all());
     }
@@ -293,8 +289,8 @@ if (!function_exists('d')) {
      */
     function d(...$args)
     {
-        foreach ($args as $x) {
-            (new Dumper)->dump($x);
+        foreach ($args as $argument) {
+            dump($argument);
         }
     }
 }

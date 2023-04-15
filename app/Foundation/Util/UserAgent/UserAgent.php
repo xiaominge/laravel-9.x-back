@@ -41,7 +41,7 @@ class UserAgent
     public function setUserAgentToContext()
     {
         $ua = separation_user_agent($this->userAgent());
-        context()->set('user_agent_os', strtolower(array_get($ua, 'os')));
+        context()->set('user_agent_os', array_get($ua, 'os'));
         context()->set('user_agent_os_version', array_get($ua, 'os_version'));
         context()->set('user_agent_device', array_get($ua, 'device'));
         context()->set('user_agent_client_type', array_get($ua, 'client_type'));
@@ -56,7 +56,7 @@ class UserAgent
      */
     private function userAgent()
     {
-        return request()->headers->has('user-agent') ? request()->headers->get('user-agent') : '';
+        return request()->header('user-agent') ?: '';
     }
 
     /**

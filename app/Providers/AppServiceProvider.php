@@ -37,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // 设置请求开始时间
+        context()->request_start_time = get_millisecond();
     }
 }
