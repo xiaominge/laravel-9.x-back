@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Exceptions\BusinessException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\AdminRequest as AdminRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Exceptions\BusinessException;
+use App\Http\Requests\Admin\AdminRequest as AdminRequest;
 
 class AdminController extends Controller
 {

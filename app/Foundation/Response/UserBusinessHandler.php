@@ -2,9 +2,9 @@
 
 namespace App\Foundation\Response;
 
-use App\Constant\UserBusinessCode;
-use App\Constant\BusinessCode;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
+use App\Constant\BusinessCode;
+use App\Constant\UserBusinessCode;
 use App\Facades\BusinessHandler;
 
 class UserBusinessHandler
