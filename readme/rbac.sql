@@ -10,7 +10,7 @@ CREATE TABLE `admins` (
   `updated_at` int unsigned NOT NULL DEFAULT '0',
   `deleted_at` int unsigned NOT NULL DEFAULT '0' COMMENT '被删除的用户无法登录',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='后台用户表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='后台用户表';
 
 LOCK TABLES `admins` WRITE;
 

@@ -18,60 +18,70 @@ Route::get('/', function () {
 });
 
 // 后台登录
-Route::group(
-    [
-        'namespace' => 'App\Http\Controllers\Admin',
-        'prefix' => 'admin',
-        'as' => 'admin.',
-    ],
-    function () {
-        Route::get('login', 'LoginController@showLoginForm')->name('login');
-        Route::post('login', 'LoginController@login')->name('login');
-    },
-);
+Route::namespace('App\Http\Controllers\Admin')
+    ->controller('LoginController')
+    ->name('admin.login')
+    ->group(function () {
+        Route::get('admin/login', 'showLoginForm');
+        Route::post('admin/login', 'login');
+    });
 
 // 后台系统
-Route::group(
-    [
-        'namespace' => 'App\Http\Controllers\Admin',
-        'middleware' => 'auth.admin',
-        'prefix' => 'admin',
-        'as' => 'admin.',
-    ],
-    function () {
+Route::middleware('auth.admin')
+    ->namespace('App\Http\Controllers\Admin')
+    ->name('admin.')
+    ->group(function () {
         // 登出
-        Route::get('logout', 'LoginController@logout')->name('logout');
-        // 后台主页面
-        Route::get('/', 'HomeController@index')->name('home');
-        // 后台欢迎页
-        Route::get('welcome', 'HomeController@welcome')->name('home.welcome');
-        // 修改账号密码
-        Route::get('password', 'HomeController@changePassword')->name('home.password.change');
-        Route::put('password', 'HomeController@doChangePassword')->name('home.password.do-change');
+        Route::get('admin/logout', 'LoginController@logout')->name('logout');
 
-        Route::get('error', 'ErrorController@index')->name('error');
+        Route::controller('HomeController')
+            ->name('home')
+            ->group(function () {
+                // 后台主页面
+                Route::get('admin', 'index');
+                // 后台欢迎页
+                Route::get('admin/welcome', 'welcome')->name('.welcome');
+                // 修改账号密码
+                Route::get('admin/password', 'changePassword')->name('.password.change');
+                Route::put('admin/password', 'doChangePassword')->name('.password.do-change');
+            });
+
+        // 错误页面
+        Route::get('admin/error', 'ErrorController@index')->name('error');
 
         // 用户角色
-        Route::get('roles', 'RoleController@index')->name('roles.index');
-        Route::get('roles/create', 'RoleController@create')->name('roles.create');
-        Route::post('roles', 'RoleController@store')->name('roles.store');
-        Route::get('roles/{id}/edit', 'RoleController@edit')->name('roles.edit');
-        Route::put('roles/{id}', 'RoleController@update')->name('roles.update');
-        Route::delete('roles/{id}', 'RoleController@destroy')->name('roles.destroy');
+        Route::controller('RoleController')
+            ->name('roles.')
+            ->group(function () {
+                Route::get('admin/roles', 'index')->name('index');
+                Route::get('admin/roles/create', 'create')->name('create');
+                Route::post('admin/roles', 'store')->name('store');
+                Route::get('admin/roles/{id}/edit', 'edit')->name('edit');
+                Route::put('admin/roles/{id}', 'update')->name('update');
+                Route::delete('admin/roles/{id}', 'destroy')->name('destroy');
+            });
 
         // 权限管理
-        Route::get('permissions', 'PermissionController@index')->name('permissions.index');
-        Route::get('permissions/create/{pid?}', 'PermissionController@create')->name('permissions.create');
-        Route::post('permissions', 'PermissionController@store')->name('permissions.store');
-        Route::get('permissions/{id}/edit', 'PermissionController@edit')->name('permissions.edit');
-        Route::put('permissions/{id}', 'PermissionController@update')->name('permissions.update');
-        Route::delete('permissions/{id}', 'PermissionController@destroy')->name('permissions.destroy');
+        Route::controller('PermissionController')
+            ->name('permissions.')
+            ->group(function () {
+                Route::get('admin/permissions', 'index')->name('index');
+                Route::get('admin/permissions/create/{pid?}', 'create')->name('create');
+                Route::post('admin/permissions', 'store')->name('store');
+                Route::get('admin/permissions/{id}/edit', 'edit')->name('edit');
+                Route::put('admin/permissions/{id}', 'update')->name('update');
+                Route::delete('admin/permissions/{id}', 'destroy')->name('destroy');
+            });
 
         // 管理员管理
-        Route::get('admins', 'AdminController@index')->name('admins.index');
-        Route::get('admins/create', 'AdminController@create')->name('admins.create');
-        Route::post('admins', 'AdminController@store')->name('admins.store');
-        Route::get('admins/{id}/edit', 'AdminController@edit')->name('admins.edit');
-        Route::put('admins/{id}', 'AdminController@update')->name('admins.update');
-        Route::delete('admins/{id}', 'AdminController@destroy')->name('admins.destroy');
+        Route::controller('AdminController')
+            ->name('admins.')
+            ->group(function () {
+                Route::get('admin/admins', 'index')->name('index');
+                Route::get('admin/admins/create', 'create')->name('create');
+                Route::post('admin/admins', 'store')->name('store');
+                Route::get('admin/admins/{id}/edit', 'edit')->name('edit');
+                Route::put('admin/admins/{id}', 'update')->name('update');
+                Route::delete('admin/admins/{id}', 'destroy')->name('destroy');
+            });
     });

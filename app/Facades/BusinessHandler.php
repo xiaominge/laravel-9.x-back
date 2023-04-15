@@ -3,9 +3,11 @@
 namespace App\Facades;
 
 use App\Constant\BusinessCode;
-use  Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Facade;
+use App\Foundation\Response\BusinessHandler as ResponseBusinessHandler;
 
 /**
+ * @method static mixed ok($data = [], $message = "OK", $businessCode = BusinessCode::HTTP_OK, $headers = []);
  * @method static mixed succeed($data, $message, $statusCode, $businessCode, $header = []);
  * @method static mixed failed($message, $data, $statusCode, $businessCode, $header = []);
  * @method static mixed internalServerError($message = "", $data = [], $businessCode = BusinessCode::HTTP_INTERNAL_SERVER_ERROR, $headers = []);
