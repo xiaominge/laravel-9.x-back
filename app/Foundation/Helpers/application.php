@@ -3,6 +3,7 @@
 use BeyondCode\DumpServer\Dumper;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\DB;
 use App\Repositories\RepositoryHandler;
 use App\Services\ServiceHandle;
 use App\Constant\DateFormat;
@@ -120,8 +121,7 @@ if (!function_exists('mongodb')) {
      */
     function mongodb($table)
     {
-        return \Illuminate\Support\Facades\DB::connection('mongodb')
-            ->collection($table);
+        return DB::connection('mongodb')->collection($table);
     }
 }
 

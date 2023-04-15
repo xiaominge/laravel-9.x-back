@@ -10,6 +10,7 @@ class UserService extends Service
      * 用户看过的人, 存入 mongodb
      * @param $userId
      * @param $targetId
+     * @return \App\Foundation\ResultReturn\ResultReturnStructure
      */
     public function userSeenSaveToMongodb($userId, $targetId)
     {
@@ -27,6 +28,6 @@ class UserService extends Service
             return result_return()->success([$userId => $targetId]);
         }
 
-        return result_return()->failure();
+        return result_return()->failure('用户看过的人，保存失败');
     }
 }

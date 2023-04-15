@@ -20,15 +20,15 @@ class ResultReturnStructure
     /**
      * @var bool
      */
-    private $status;
+    public $status;
     /**
      * @var string
      */
-    private $msg;
+    public $msg;
     /**
      * @var mixed
      */
-    private $data;
+    public $data;
 
     /**
      * @param string $name

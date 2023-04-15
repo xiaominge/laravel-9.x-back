@@ -42,7 +42,7 @@ class AdminPermissionVerify
     private function returnErrorMsg($message)
     {
         if (request()->ajax() || request()->wantsJson()) {
-            return user_business_handler()->fail($message);
+            return business_handler_user()->fail($message);
         } else {
             return back()->withErrors($message);
         }

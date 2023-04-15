@@ -26,14 +26,16 @@ Route::get('/test', function () {
     $targetId = 21;
 
     $insertRet = service()->user->userSeenSaveToMongodb($userId, $targetId);
-    print_r($insertRet);
+    if ($insertRet->status === true) {
+        $latestInfo = mongodb('user_seen')
+            ->where('target_id', $targetId)
+            ->orderBy('created_at', 'desc')
+            ->first();
 
-    $latestInfo = mongodb('user_seen')
-        ->where('target_id', $targetId)
-        ->orderBy('created_at', 'desc')
-        ->first();
+        return $latestInfo;
+    }
 
-    return $latestInfo;
+    return (object)[];
 });
 
 // 后台登录
