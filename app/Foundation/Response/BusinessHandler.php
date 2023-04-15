@@ -266,7 +266,7 @@ class BusinessHandler
         $response = [
             'code' => $businessCode,
             'message' => $message,
-            'data' => $data,
+            'data' => (object)$data,
         ];
 
         return response()->json($response, $statusCode, $header);

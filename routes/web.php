@@ -20,23 +20,24 @@ Route::get('/', function () {
 /**
  * 测试路由
  */
-Route::get('/test', function () {
+Route::middleware(['common'])
+    ->get('/test', function () {
 
-    $userId = 31;
-    $targetId = 21;
+        $userId = 31;
+        $targetId = 21;
 
-    $insertRet = service()->user->userSeenSaveToMongodb($userId, $targetId);
-    if ($insertRet->status === true) {
-        $latestInfo = mongodb('user_seen')
-            ->where('target_id', $targetId)
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $insertRet = service()->user->userSeenSaveToMongodb($userId, $targetId);
+        if ($insertRet->status === true) {
+            $latestInfo = mongodb('user_seen')
+                ->where('target_id', $targetId)
+                ->orderBy('created_at', 'desc')
+                ->first();
 
-        return $latestInfo;
-    }
+            return business_handler()->ok($latestInfo);
+        }
 
-    return (object)[];
-});
+        return business_handler()->notFound("未找到记录");
+    });
 
 // 后台登录
 Route::namespace('App\Http\Controllers\Admin')
@@ -48,7 +49,7 @@ Route::namespace('App\Http\Controllers\Admin')
     });
 
 // 后台系统
-Route::middleware('auth.admin')
+Route::middleware(['auth.admin'])
     ->namespace('App\Http\Controllers\Admin')
     ->name('admin.')
     ->group(function () {
@@ -73,6 +74,7 @@ Route::middleware('auth.admin')
 
         // 用户角色
         Route::controller('RoleController')
+            ->middleware(['admin.permission.verify'])
             ->name('roles.')
             ->group(function () {
                 Route::get('admin/roles', 'index')->name('index');

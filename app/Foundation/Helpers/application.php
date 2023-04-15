@@ -4,6 +4,7 @@ use BeyondCode\DumpServer\Dumper;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use App\Repositories\RepositoryHandler;
 use App\Services\ServiceHandle;
 use App\Constant\DateFormat;
@@ -129,6 +130,47 @@ if (!function_exists('is_target_route')) {
     function is_target_route($targetRouteName)
     {
         return Route::currentRouteName() === $targetRouteName;
+    }
+}
+
+if (!function_exists('set_request_context')) {
+    function set_request_context(): void
+    {
+        $url = urldecode(parse_url(URL::full(), PHP_URL_QUERY));
+        $query = $url ? url_query_to_array($url) : [];
+        context()->set('request_query', $query);
+        context()->set('request_json_payload', request()->json()->all());
+        context()->set('request_header', request()->headers->all());
+    }
+}
+
+if (!function_exists('request_query')) {
+    /**
+     * @return \Illuminate\Foundation\Application|mixed
+     */
+    function request_query()
+    {
+        return context('request_query');
+    }
+}
+
+if (!function_exists('request_json_payload')) {
+    /**
+     * @return \Illuminate\Foundation\Application|mixed
+     */
+    function request_json_payload()
+    {
+        return context('request_json_payload');
+    }
+}
+
+if (!function_exists('request_header')) {
+    /**
+     * @return \Illuminate\Foundation\Application|mixed
+     */
+    function request_header()
+    {
+        return context('request_header');
     }
 }
 
