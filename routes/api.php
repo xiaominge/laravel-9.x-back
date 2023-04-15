@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 
@@ -23,12 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
  * 测试路由
  */
 Route::middleware(['common'])
-    ->get('/test/{part?}', function ($part = 'request') {
+    ->get('/test/{part?}', function ($part = '') {
 
         $userId = 31;
         $targetId = 21;
         $return = [];
-        $return['sprintf'] = sprintf("%.3f", 0.12);
+
         if ($part == 'weather') {
             try {
                 $response = guzzle_client()->request('get', 'https://api.jisuapi.com/weather/query');
@@ -129,6 +130,29 @@ Route::middleware(['common'])
             $return['cache'][$adminsRedisKey] = $admins;
             $return['cache'][$rolesRedisKey] = $rolesRet;
             $return['cache'][$uidRedisKey] = $uid;
+        } else {
+            // 定义二维数组
+            $arr = [[1], [2, 3]];
+            // 框架方法
+            $arr1 = Arr::collapse($arr);
+            $arr2 = array_collapse($arr);
+            // 内置函数
+            $arr3 = array_reduce($arr, "array_merge", []);
+            // 语法
+            $arr4 = array_merge([], ...$arr);
+            // 遍历
+            $arr5 = [];
+            foreach ($arr as $val) {
+                $arr5 = array_merge($arr5, $val);
+            }
+
+            $return['collapse']['arr1'] = $arr1;
+            $return['collapse']['arr2'] = $arr2;
+            $return['collapse']['arr3'] = $arr3;
+            $return['collapse']['arr4'] = $arr4;
+            $return['collapse']['arr5'] = $arr5;
+
+            $return['sprintf'] = sprintf("%.3f", 0.12);
         }
 
         return business_handler_user()->success($return);

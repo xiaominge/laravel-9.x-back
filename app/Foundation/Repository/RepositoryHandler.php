@@ -76,7 +76,7 @@ class RepositoryHandler
     public function __get($name)
     {
         if (!isset(static::$registerList[$name])) {
-            throw new BusinessException($name . ' Unregistered please add to registerList');
+            throw new BusinessException("Unregistered repository $name! Please add to registerList!");
         } elseif (!isset(static::$repositories[$name])) {
             static::register($name);
         }

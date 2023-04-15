@@ -6,8 +6,22 @@ use App\Exceptions\BusinessException;
 
 class ServiceHandler
 {
+    /**
+     * 单例
+     * @var object
+     */
     protected static $instance;
-    protected static $pockets;
+
+    /**
+     * 所有服务类实例
+     * @var array
+     */
+    protected static $serviceList;
+
+    /**
+     * 注册服务名称列表
+     * @var array
+     */
     protected static $registerList;
 
     protected function __construct()
@@ -19,13 +33,12 @@ class ServiceHandler
     }
 
     /**
-     * get singleton
-     *
-     * @return $this
+     * 获取类的实例
+     * @return \App\Services\ServiceHandler
      */
     public static function getInstance()
     {
-        if (!static::$instance) {
+        if (empty(static::$instance)) {
             static::$instance = new static();
         }
 
@@ -33,39 +46,40 @@ class ServiceHandler
     }
 
     /**
-     * register all
+     * 注册所有的服务
+     * @return void
      */
     public static function registerAll()
     {
         foreach (static::$registerList as $name => $class) {
-            static::$pockets[$name] = app($class);
+            static::$serviceList[$name] = app($class);
         }
     }
 
     /**
-     * register someone
-     *
+     * 注册服务
      * @param $name
+     * @return void
      */
     public static function register($name)
     {
-        static::$pockets[$name] = app(static::$registerList[$name]);
+        static::$serviceList[$name] = app(static::$registerList[$name]);
     }
 
     /**
+     * 获取服务
      * @param $name
-     *
      * @return mixed
      * @throws BusinessException
      */
     public function __get($name)
     {
-        if (isset(static::$registerList[$name]) && !isset(static::$pockets[$name])) {
+        if (!isset(static::$registerList[$name])) {
+            throw new BusinessException("Unregistered service $name! Please add to registerList!");
+        } elseif (!isset(static::$serviceList[$name])) {
             static::register($name);
-        } elseif (!isset(static::$pockets[$name])) {
-            throw new BusinessException($name . ' Unregistered please add to registerList');
         }
 
-        return static::$pockets[$name];
+        return static::$serviceList[$name];
     }
 }

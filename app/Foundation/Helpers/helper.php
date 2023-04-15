@@ -125,11 +125,7 @@ if (!function_exists('split_url')) {
 if (!function_exists('selected_or_not')) {
     function selected_or_not($from, $to)
     {
-        if ($from === $to) {
-            return 'selected';
-        }
-
-        return '';
+        return $from === $to ? 'selected' : '';
     }
 }
 
