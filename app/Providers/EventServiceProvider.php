@@ -18,6 +18,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+
+        \App\Events\Api\RoleStore::class => [
+            \App\Listeners\Api\RoleStoreRequestLog::class,
+        ],
     ];
 
     /**
