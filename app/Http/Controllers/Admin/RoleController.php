@@ -51,10 +51,10 @@ class RoleController extends Controller
             ]);
             DB::commit();
 
-            return user_business_handler()->success('', '角色创建成功');
+            return business_handler_user()->success('', '角色创建成功');
         } catch (\Exception $e) {
             DB::rollBack();
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
     }
 
@@ -91,7 +91,7 @@ class RoleController extends Controller
         try {
             $role = repository()->role->findById($id);
         } catch (BusinessException $e) {
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
 
         $updateData = [
@@ -110,9 +110,9 @@ class RoleController extends Controller
             ];
         }
         if ($role->update($updateData) && $role->permissions()->sync($addPermissions)) {
-            return user_business_handler()->success('', '角色更新成功');
+            return business_handler_user()->success('', '角色更新成功');
         } else {
-            return user_business_handler()->fail('角色更新失败');
+            return business_handler_user()->fail('角色更新失败');
         }
     }
 
@@ -123,7 +123,7 @@ class RoleController extends Controller
             $role = repository()->role->findById($id);
             $adminIds = $role->admins->pluck('id')->toArray();
             if ($adminIds) {
-                return user_business_handler()->fail('角色正在被使用，无法删除');
+                return business_handler_user()->fail('角色正在被使用，无法删除');
             }
 
             // 解除 角色和权限 之间的关系
@@ -132,10 +132,10 @@ class RoleController extends Controller
             $role->update(['deleted_at' => time()]);
             DB::commit();
 
-            return user_business_handler()->success('', '角色删除成功');
+            return business_handler_user()->success('', '角色删除成功');
         } catch (\Exception $e) {
             DB::rollBack();
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
     }
 }

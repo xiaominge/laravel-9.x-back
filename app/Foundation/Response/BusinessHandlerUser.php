@@ -4,10 +4,10 @@ namespace App\Foundation\Response;
 
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
 use App\Constant\BusinessCode;
-use App\Constant\UserBusinessCode;
+use App\Constant\BusinessCodeUser;
 use App\Facades\BusinessHandler;
 
-class UserBusinessHandler
+class BusinessHandlerUser
 {
     /**
      * 返回成功响应（HTTP 状态码 200）
@@ -55,7 +55,7 @@ class UserBusinessHandler
      */
     public function updateDbError($message = 'db error', $data = [])
     {
-        return BusinessHandler::internalServerError($message, $data, UserBusinessCode::SERVICE_UPDATE_DB_ERROR);
+        return BusinessHandler::internalServerError($message, $data, BusinessCodeUser::SERVICE_UPDATE_DB_ERROR);
     }
 
     /**
@@ -68,6 +68,6 @@ class UserBusinessHandler
      */
     public function notFoundUser($message = '找不到用户', $data = [])
     {
-        return BusinessHandler::notFound($message, $data, UserBusinessCode::USER_NOT_FOUND);
+        return BusinessHandler::notFound($message, $data, BusinessCodeUser::USER_NOT_FOUND);
     }
 }

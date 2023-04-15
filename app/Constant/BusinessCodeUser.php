@@ -2,7 +2,7 @@
 
 namespace App\Constant;
 
-class UserBusinessCode
+class BusinessCodeUser extends BusinessCode
 {
     const AUTH_TOKEN_MISSING = 1000001; // token不存在
     const AUTH_TOKEN_ERROR = 1000002; // token错误

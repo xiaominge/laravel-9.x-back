@@ -52,18 +52,18 @@ class HomeController extends Controller
         // 检查旧密码是否正确
         $admin = auth('admin')->user();
         if (!Hash::check($request->old_password, $admin->password)) {
-            return user_business_handler()->fail('输入的旧密码不正确');
+            return business_handler_user()->fail('输入的旧密码不正确');
         }
         if ($request->password != $request->confirm_password) {
-            return user_business_handler()->fail('两次输入的密码不一致');
+            return business_handler_user()->fail('两次输入的密码不一致');
         }
 
         $admin->password = bcrypt($request->password);
         $db = $admin->save();
 
         if ($db) {
-            return user_business_handler()->success('', '密码修改成功');
+            return business_handler_user()->success('', '密码修改成功');
         }
-        return user_business_handler()->fail('密码修改失败');
+        return business_handler_user()->fail('密码修改失败');
     }
 }

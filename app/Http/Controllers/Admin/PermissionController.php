@@ -45,7 +45,7 @@ class PermissionController extends Controller
             'updated_at' => time(),
         ];
         repository()->permission->m()->create($data);
-        return user_business_handler()->success('', '权限创建成功');
+        return business_handler_user()->success('', '权限创建成功');
     }
 
     public function edit(Request $request, $id)
@@ -84,9 +84,9 @@ class PermissionController extends Controller
             ];
             $permission->update($data);
 
-            return user_business_handler()->success('', '权限更新成功');
+            return business_handler_user()->success('', '权限更新成功');
         } catch (\Exception $e) {
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
     }
 
@@ -97,7 +97,7 @@ class PermissionController extends Controller
             $permission = repository()->permission->findById($id);
             $roleIds = $permission->roles->pluck('id')->toArray();
             if ($roleIds) {
-                return user_business_handler()->fail('权限正在被使用，无法删除');
+                return business_handler_user()->fail('权限正在被使用，无法删除');
             }
 
             $allPermission = repository()->permission->all();
@@ -106,9 +106,9 @@ class PermissionController extends Controller
                 ->whereIn('id', $permissions)
                 ->update(['deleted_at' => time()]);
 
-            return user_business_handler()->success('', '权限删除成功');
+            return business_handler_user()->success('', '权限删除成功');
         } catch (BusinessException $e) {
-            return user_business_handler()->fail('权限删除失败');
+            return business_handler_user()->fail('权限删除失败');
         }
     }
 

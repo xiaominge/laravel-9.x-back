@@ -58,10 +58,10 @@ class AdminController extends Controller
             // 管理员与角色关系
             $admin->roles()->update(['admin_role.deleted_at' => time()]);
             DB::commit();
-            return user_business_handler()->success('', '管理员删除成功');
+            return business_handler_user()->success('', '管理员删除成功');
         } catch (\Exception $e) {
             DB::rollBack();
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
     }
 
@@ -83,10 +83,10 @@ class AdminController extends Controller
             ]);
             DB::commit();
 
-            return user_business_handler()->success('', '管理员创建成功');
+            return business_handler_user()->success('', '管理员创建成功');
         } catch (\Exception $e) {
             DB::rollBack();
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
     }
 
@@ -142,10 +142,10 @@ class AdminController extends Controller
             $admin->roles()->sync($addRoles);
             DB::commit();
 
-            return user_business_handler()->success('', '管理员更新成功');
+            return business_handler_user()->success('', '管理员更新成功');
         } catch (\Exception $e) {
             DB::rollBack();
-            return user_business_handler()->fail($e->getMessage());
+            return business_handler_user()->fail($e->getMessage());
         }
     }
 }

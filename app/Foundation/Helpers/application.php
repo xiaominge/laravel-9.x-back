@@ -33,13 +33,13 @@ if (!function_exists('business_handler')) {
     }
 }
 
-if (!function_exists('user_business_handler')) {
+if (!function_exists('business_handler_user')) {
     /**
-     * @return App\Foundation\Response\UserBusinessHandler|mixed
+     * @return App\Foundation\Response\BusinessHandlerUser|mixed
      */
-    function user_business_handler()
+    function business_handler_user()
     {
-        return app('userBusinessHandler');
+        return app('businessHandlerUser');
     }
 }
 
