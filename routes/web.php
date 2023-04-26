@@ -2,17 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -20,20 +9,18 @@ Route::get('/', function () {
 /**
  * 测试路由
  */
-Route::middleware(['common'])
-    ->get('/test', function () {
-        $userId = 31;
-        $targetId = 21;
-        $insertRet = service()->user->userSeenSaveToMongodb($userId, $targetId);
-        if ($insertRet->status === true) {
-            $latestInfo = mongodb('user_seen')
-                ->where('target_id', $targetId)
-                ->orderBy('created_at', 'desc')
-                ->first();
-            return business_handler_user()->success($latestInfo);
-        }
-        return business_handler_user()->fail("未找到记录");
-    });
+Route::middleware(['common', 'auth.admin'])->get('/test', function () {
+    $roleModel = repository()->role->m();
+
+    var_dump($roleModel::CREATED_AT);
+    echo "<br>";
+    var_dump($roleModel->timestamps);
+    echo "<br>";
+
+    $permissions = service()->permission->getLoginAdminPermission();
+    print_r($permissions->toArray());
+    die;
+});
 
 // 后台登录
 Route::namespace('App\Http\Controllers\Admin')
@@ -45,7 +32,7 @@ Route::namespace('App\Http\Controllers\Admin')
     });
 
 // 后台系统
-Route::middleware(['auth.admin'])
+Route::middleware(['common', 'auth.admin'])
     ->namespace('App\Http\Controllers\Admin')
     ->name('admin.')
     ->group(function () {
@@ -68,7 +55,7 @@ Route::middleware(['auth.admin'])
         // 错误页面
         Route::get('admin/error', 'ErrorController@index')->name('error');
 
-        // 用户角色
+        // 角色管理
         Route::controller('RoleController')
             ->name('roles.')
             ->middleware('admin.permission.verify')

@@ -15,6 +15,7 @@ abstract class Repository implements RepositoryInterface
      * @var Model|\App\Foundation\Trait\Model
      */
     protected $model;
+
     /**
      * @var \Illuminate\Database\Eloquent\Builder|null
      */

@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Foundation\Trait\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Notifications\Notifiable;
 
 /**
@@ -21,13 +21,28 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin undeleted()
  * @mixin \Eloquent
  */
-class Admin extends Authenticatable
+class Admin extends AuthUser
 {
     use Notifiable, Model;
 
+    /**
+     * 表名
+     * @var string
+     */
     protected $table = 'admins';
 
-    public $timestamps = false;
+    /**
+     * 批量赋值字段
+     * @var string[]
+     */
+    public $fillable = [
+        'name',
+        'password',
+        'email',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     /**
      * The attributes that should be hidden for arrays.
@@ -39,15 +54,6 @@ class Admin extends Authenticatable
         'remember_token',
     ];
 
-    public $fillable = [
-        'name',
-        'password',
-        'email',
-        'created_at',
-        'updated_at',
-        'deleted_at',
-    ];
-
     /**
      * 获取用户的角色
      *
@@ -57,6 +63,8 @@ class Admin extends Authenticatable
     {
         return $this->belongsToMany(Role::class, 'admin_role', 'admin_id', 'role_id')
             ->where('roles.deleted_at', 0)
-            ->where('admin_role.deleted_at', 0);
+            ->wherePivot('deleted_at', 0)
+            ->withPivot('id', 'created_at', 'updated_at')
+            ->as('admin_role');
     }
 }

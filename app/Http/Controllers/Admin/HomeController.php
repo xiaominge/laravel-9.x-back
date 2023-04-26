@@ -24,10 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $permissions = service()->permission
-            ->getLoginAdminPermission()
-            ->sortByDesc('sort')
-            ->values();
+        $permissions = service()->permission->getLoginAdminPermission();
+        $permissions = $permissions->sortByDesc('sort');
+        $permissions = $permissions->values();
+
         $topMenus = $permissions->where('pid', 0)->toArray();
         $permissionsGroupByPid = $permissions->groupBy('pid')->toArray();
 //        dd($topMenus, $permissionsGroupByPid, $permissions->toArray());

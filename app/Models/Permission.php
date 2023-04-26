@@ -26,9 +26,16 @@ class Permission extends Eloquent
 {
     use Model;
 
+    /**
+     * 表名
+     * @var string
+     */
     protected $table = 'permissions';
-    public $timestamps = false;
 
+    /**
+     * 批量赋值字段
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'description',
@@ -48,8 +55,9 @@ class Permission extends Eloquent
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_permission', 'permission_id', 'role_id')
-            ->where('role_permission.deleted_at', 0)
-            ->where('roles.deleted_at', 0);
+            ->where('roles.deleted_at', 0)
+            ->wherePivot('deleted_at', 0)
+            ->withPivot('id', 'created_at', 'updated_at')
+            ->as('role_permission');
     }
-
 }

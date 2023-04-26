@@ -5,17 +5,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
 use Carbon\Carbon;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -132,7 +121,7 @@ Route::middleware(['common'])
             $return['cache'][$uidRedisKey] = $uid;
         } else {
             // 定义二维数组
-            $arr = [[1], [2, 3]];
+            $arr = [[1], [2, 'sum' => [3]]];
             // 框架方法
             $arr1 = Arr::collapse($arr);
             $arr2 = array_collapse($arr);
@@ -145,7 +134,6 @@ Route::middleware(['common'])
             foreach ($arr as $val) {
                 $arr5 = array_merge($arr5, $val);
             }
-
             $return['collapse']['arr1'] = $arr1;
             $return['collapse']['arr2'] = $arr2;
             $return['collapse']['arr3'] = $arr3;
@@ -153,6 +141,13 @@ Route::middleware(['common'])
             $return['collapse']['arr5'] = $arr5;
 
             $return['sprintf'] = sprintf("%.3f", 0.12);
+
+            $array1 = array(0 => 'zero_a', 2 => 'two_a', 3 => 'three_a', 'h' => 'ddd');
+            $array2 = array(1 => 'one_b', 3 => 'three_b', 4 => 'four_b', 'h' => 'eee');
+            $result1 = $array1 + $array2;
+            $result2 = array_merge($array1, $array2);
+            $return['merge1'] = $result1;
+            $return['merge2'] = $result2;
         }
 
         return business_handler_user()->success($return);
